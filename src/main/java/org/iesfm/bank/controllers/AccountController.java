@@ -47,6 +47,6 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/customers/{ownerId}/accounts")
     public void insert(@PathVariable("ownerId") int ownerId){
-        return accountRepository.insertByOwnerId(ownerId);
+       accountRepository.insertByOwnerId(ownerId);
     }
 }
