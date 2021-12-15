@@ -5,10 +5,7 @@ import org.iesfm.bank.Customer;
 import org.iesfm.bank.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -40,13 +37,13 @@ public class AccountController {
         accountRepository.deleteById(iban);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/customers/{ownerId}/accounts")
-    public List<Account> list(@PathVariable("ownerId") int ownerId){
-        return accountRepository.findByOwnerId(ownerId);
+    @RequestMapping(method = RequestMethod.GET, path = "/customers/{customerId}/accounts")
+    public List<Account> list(@PathVariable("customerId") int customerId){
+        return accountRepository.findByOwnerId(customerId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/customers/{ownerId}/accounts")
-    public void insert(@PathVariable("ownerId") int ownerId){
-       accountRepository.insertByOwnerId(ownerId);
+    @RequestMapping(method = RequestMethod.POST, path = "/customers/{id}/accounts")
+    public void insert(@PathVariable("id") int id, @RequestBody Account account){
+        accountRepository.save(account);
     }
 }
