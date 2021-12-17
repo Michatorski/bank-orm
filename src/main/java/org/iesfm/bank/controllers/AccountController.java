@@ -3,6 +3,7 @@ package org.iesfm.bank.controllers;
 import org.iesfm.bank.Account;
 import org.iesfm.bank.Customer;
 import org.iesfm.bank.repository.AccountRepository;
+import org.iesfm.bank.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ import java.util.Optional;
 public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @RequestMapping(method = RequestMethod.GET, path = "/accounts")
     public List<Account> list() {
@@ -44,6 +48,11 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/customers/{id}/accounts")
     public void insert(@PathVariable("id") int id, @RequestBody Account account){
-        accountRepository.save(account);
+        if (customerRepository.existsById(id)){
+            accountRepository.save(account);
+        } else {
+            throw new  ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontre");
+        }
+
     }
 }
