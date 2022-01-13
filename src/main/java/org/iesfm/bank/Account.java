@@ -1,7 +1,10 @@
 package org.iesfm.bank;
 
+import org.hibernate.action.internal.OrphanRemovalAction;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,9 +15,14 @@ public class Account {
     @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Customer ownerId;
-    private  double balance;
+    private double balance;
     @Column(name = "open_date")
     private Date openDate;
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            mappedBy = "iban")
+    private List<Movement> movements;
 
     public String getIban() {
         return iban;
